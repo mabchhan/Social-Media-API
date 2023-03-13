@@ -11,10 +11,7 @@ const {
 } = require("../../controllers/thoughtController");
 
 // /api/thoughts
-router.route("/").get(getAllThoughts);
-
-// /api/thought/:userId
-router.route("/:userId").post(createThought);
+router.route("/").get(getAllThoughts).post(createThought);
 
 // /api/thoughts/:thoughtId
 router

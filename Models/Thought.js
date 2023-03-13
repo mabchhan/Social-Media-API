@@ -1,4 +1,5 @@
 const { Schema, model, Types } = require("mongoose");
+const dayjs = require("dayjs");
 
 // Reaction is a subdocument of Thought
 const ReactionSchema = new Schema(
@@ -20,12 +21,15 @@ const ReactionSchema = new Schema(
     createdAt: {
       type: Date,
       default: Date.now,
+      get: (createdAtVal) =>
+        dayjs(createdAtVal).format("MMMM DD, YYYY [at] h:m a"),
     },
   },
   {
     toJSON: {
       getters: true,
     },
+    id: false,
   }
 );
 
@@ -40,6 +44,8 @@ const ThoughtSchema = new Schema(
     createdAt: {
       type: Date,
       default: Date.now,
+      get: (createdAtVal) =>
+        dayjs(createdAtVal).format("MMMM DD, YYYY [at] h:m a"),
     },
     username: {
       type: String,

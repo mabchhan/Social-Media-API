@@ -1,4 +1,4 @@
-const { User } = require("../Models");
+const { User, Thought } = require("../Models");
 
 module.exports = {
   // Post a new user
@@ -58,6 +58,22 @@ module.exports = {
       });
   },
 
+  // Delete user
+  // /api/users/:userId
+  deleteUser(req, res) {
+    User.findOneAndRemove({ _id: req.params.userId })
+      .then((user) =>
+        !user
+          ? res.status(404).json({ message: "No user with this id!" })
+          : Thought.deleteMany({ _id: user.thoughts })
+      )
+      .then(() => {
+        res.json({ message: "user and thoughts deleted!" });
+      })
+
+      .catch((err) => res.status(500).json(err));
+  },
+
   // Add friend to friend's list
   // /api/users/:userId/friends/:friendId
   addFriend(req, res) {
@@ -79,19 +95,6 @@ module.exports = {
         res.json(dbUserData);
       })
       .catch((err) => res.json(err));
-  },
-
-  // Delete user
-  // /api/users/:userId
-  deleteUser(req, res) {
-    User.findOneAndRemove({ _id: req.params.userId })
-      .then((user) =>
-        !user
-          ? res.status(404).json({ message: "No user with this id!" })
-          : res.json(user)
-      )
-
-      .catch((err) => res.status(500).json(err));
   },
 
   // Delete friend from friend's list

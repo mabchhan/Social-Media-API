@@ -37,7 +37,7 @@ module.exports = {
   },
 
   // Create thought
-  // /api/thoughts/:userId
+  // /api/thoughts/
 
   createThought(req, res) {
     Thought.create(req.body)
@@ -50,9 +50,7 @@ module.exports = {
       })
       .then((dbUserData) => {
         if (!dbUserData) {
-          return res
-            .status(404)
-            .json({ message: "No user with this ID but thought created" });
+          return res.status(404).json({ message: "No user with this ID" });
         }
         res.json(dbUserData);
       })
@@ -107,10 +105,10 @@ module.exports = {
       { $push: { reactions: req.body } },
       { new: true, runValidators: true }
     )
-      .populate({
-        path: "reactions",
-        select: "-__v",
-      })
+      //   .populate({
+      //     path: "reactions",
+      //     select: "-__v",
+      //   })
       .select("-__v")
       .then((dbThoughtData) => {
         if (!dbThoughtData) {
