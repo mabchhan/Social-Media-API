@@ -61,11 +61,11 @@ module.exports = {
   // Delete user
   // /api/users/:userId
   deleteUser(req, res) {
-    User.findOneAndRemove({ _id: req.params.userId })
+    User.findOneAndDelete({ _id: req.params.userId })
       .then((user) =>
         !user
           ? res.status(404).json({ message: "No user with this id!" })
-          : Thought.deleteMany({ _id: user.thoughts })
+          : Thought.deleteMany({ _id: { $in: user.thoughts } })
       )
       .then(() => {
         res.json({ message: "user and thoughts deleted!" });
@@ -78,7 +78,7 @@ module.exports = {
   // /api/users/:userId/friends/:friendId
   addFriend(req, res) {
     User.findOneAndUpdate(
-      { _id: req.params.id },
+      { _id: req.params.userId },
       { $push: { friends: req.params.friendId } },
       { new: true, runValidators: true }
     )
@@ -86,7 +86,7 @@ module.exports = {
         path: "friends",
         select: "-__v",
       })
-      .select("-__v")
+      //.select("-__v")
       .then((dbUserData) => {
         if (!dbUserData) {
           res.status(404).json({ message: "No User found with this id!" });
