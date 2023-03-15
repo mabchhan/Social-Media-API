@@ -38,6 +38,10 @@ GIVEN a social network API
 
   - THEN I am able to successfully create and delete reactions to thoughts and add and remove friends to a user’s friend list
 
+## Demo
+
+You can visit my video walk-through this app [here](https://drive.google.com/file/d/1kVSB1EXOeaBNJfQz1In1GqalROIjHROd/view?usp=share_link).
+
 ## License
 
 This project is under MIT license.
